@@ -24,18 +24,19 @@ Entry point: 0xC07B (_Startup)
 _startupData is allocated at 0xC084 and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x100     14
-  _Copy    *toCopyDownBeg 0xC245
+  _Range   pZeroOut       0x100     746
+  _Copy    *toCopyDownBeg 0xC386
 } _startupData;
 
 *********************************************************************************************
 SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
+.data                            732   R/W      0x100      0x3DB   RAM
 .init                            132     R     0xC000     0xC083   ROM
 .startData                        18     R     0xC084     0xC095   ROM
-.text                            431     R     0xC096     0xC244   ROM
-.copy                              2     R     0xC245     0xC246   ROM
+.text                            752     R     0xC096     0xC385   ROM
+.copy                            736     R     0xC386     0xC665   ROM
 .abs_section_0                     1   N/I        0x0        0x0   .absSeg0
 .abs_section_1                     1   N/I        0x1        0x1   .absSeg1
 .abs_section_2                     1   N/I        0x2        0x2   .absSeg2
@@ -180,14 +181,14 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_1810                  2   N/I     0x1810     0x1811   .absSeg141
 .abs_section_1812                  2   N/I     0x1812     0x1813   .absSeg142
 .abs_section_1814                  2   N/I     0x1814     0x1815   .absSeg143
-.bss                               2   R/W      0x100      0x101   RAM
-.common                           12   R/W      0x102      0x10D   RAM
-.stack                           128   R/W      0x10E      0x18D   RAM
+.bss                               2   R/W      0x3DC      0x3DD   RAM
+.common                           12   R/W      0x3DE      0x3E9   RAM
+.stack                           128   R/W      0x3EA      0x469   RAM
 .vectSeg144_vect                   2     R     0xFFFE     0xFFFF   .vectSeg144
 
 Summary of section sizes per section type:
-READ_ONLY (R):         249 (dec:      585)
-READ_WRITE (R/W):       8E (dec:      142)
+READ_ONLY (R):         668 (dec:     1640)
+READ_WRITE (R/W):      36A (dec:      874)
 NO_INIT (N/I):          A6 (dec:      166)
 
 *********************************************************************************************
@@ -204,12 +205,14 @@ MODULE:                 -- main_c.obj --
 - PROCEDURES:
      tiempo                                    C096      21      33       1   .text       
      motor                                     C0B7      3F      63       1   .text       
-     main                                      C0F6      7F     127       1   .text       
+     Gdato                                     C0F6      34      52       1   .text       
+     main                                      C12A      82     130       1   .text       
 - VARIABLES:
-     bandera                                    100       2       2       3   .bss        
-     TIEMPO                                     102       4       4       2   .common     
-     i                                          106       4       4       4   .common     
-     dato                                       10A       4       4       4   .common     
+     N                                          100     2DC     732       1   .data       
+     bandera                                    3DC       2       2       3   .bss        
+     TIEMPOX                                    3DE       4       4       4   .common     
+     i                                          3E2       4       4       4   .common     
+     dato                                       3E6       4       4       5   .common     
 MODULE:                 -- start08_c.obj --
 - PROCEDURES:
      loadByte                                  C000       E      14       5   .init       
@@ -218,7 +221,7 @@ MODULE:                 -- start08_c.obj --
 - VARIABLES:
      _startupData                              C084       6       6       4   .startData  
 - LABELS:
-     __SEG_END_SSTACK                           18E       0       0       1               
+     __SEG_END_SSTACK                           46A       0       0       1               
 MODULE:                 -- mc9s08jm16_c.obj --
 - PROCEDURES:
 - VARIABLES:
@@ -368,38 +371,46 @@ MODULE:                 -- mc9s08jm16_c.obj --
      _DBGF                                     1814       2       2       0   .abs_section_1814
 MODULE:                 -- rtshc08.o (ansiis.lib) --
 - PROCEDURES:
-     _PUSH_ARGS_L                              C175      20      32       1   .text       
-     _ENTER_UNARY_L                            C195      29      41       2   .text       
-     _ENTER_BINARY_L                           C1BE      16      22       1   .text       
-     _LCMP_k_rel_j                             C1D4      1F      31       1   .text       
-     _LINC                                     C1F3      16      22       2   .text       
-     _LDEC                                     C209      1C      28       1   .text       
-     _LCMP                                     C225       6       6       1   .text       
-     _POP32                                    C22B      1A      26       2   .text       
+     _PUSH_ARGS_L                              C1AC      20      32       2   .text       
+     _ENTER_UNARY_L                            C1CC      29      41       2   .text       
+     _ENTER_BINARY_L                           C1F5      16      22       1   .text       
+     _ENTER_BINARY_L_RC                        C20B      19      25       1   .text       
+     _LDIVMOD                                  C224      A4     164       1   .text       
+     _LDIVU_k_is_k_div_j                       C2C8      17      23       1   .text       
+     _LCMP_k_rel_j                             C2DF      1F      31       1   .text       
+     _LINC                                     C2FE      16      22       2   .text       
+     _LDEC                                     C314      1C      28       1   .text       
+     _LDIVU_RC                                 C330       6       6       1   .text       
+     _LCMP                                     C336       6       6       1   .text       
+     _COPY                                     C33C      30      48       1   .text       
+     _POP32                                    C36C      1A      26       3   .text       
 - VARIABLES:
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
-  main_c.obj                                  14    223      0
+  main_c.obj                                 746    278      0
   start08_c.obj                                0    132      0
   mc9s08jm16_c.obj                           166      0      0
-  rtshc08.o (ansiis.lib)                       0    208      0
-  other                                      128     20      2
+  rtshc08.o (ansiis.lib)                       0    474      0
+  other                                      128     20    736
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  tiempo motor main _PUSH_ARGS_L _ENTER_UNARY_L _ENTER_BINARY_L _LCMP_k_rel_j 
-  _LINC _LDEC _LCMP _POP32 
+  tiempo motor Gdato main _PUSH_ARGS_L _ENTER_UNARY_L _ENTER_BINARY_L 
+  _ENTER_BINARY_L_RC _LDIVMOD _LDIVU_k_is_k_div_j _LCMP_k_rel_j _LINC _LDEC 
+  _LDIVU_RC _LCMP _COPY _POP32 
+SECTION: ".data"
+  N 
 SECTION: ".bss"
   bandera 
 SECTION: ".init"
   loadByte Init _Startup 
 SECTION: ".common"
-  TIEMPO i dato 
+  TIEMPOX i dato 
 SECTION: ".abs_section_0"
   _PTAD 
 SECTION: ".abs_section_1"
@@ -797,10 +808,11 @@ OBJECT LIST SORTED BY ADDRESS
      _EPCTL4                                     A1       1       1       0   .abs_section_a1
      _EPCTL5                                     A2       1       1       0   .abs_section_a2
      _EPCTL6                                     A3       1       1       0   .abs_section_a3
-     bandera                                    100       2       2       3   .bss        
-     TIEMPO                                     102       4       4       2   .common     
-     i                                          106       4       4       4   .common     
-     dato                                       10A       4       4       4   .common     
+     N                                          100     2DC     732       1   .data       
+     bandera                                    3DC       2       2       3   .bss        
+     TIEMPOX                                    3DE       4       4       4   .common     
+     i                                          3E2       4       4       4   .common     
+     dato                                       3E6       4       4       5   .common     
      _SRS                                      1800       1       1       0   .abs_section_1800
      _SBDFR                                    1801       1       1       0   .abs_section_1801
      _SOPT1                                    1802       1       1       1   .abs_section_1802
@@ -846,49 +858,106 @@ OBJECT LIST SORTED BY ADDRESS
      _Startup                                  C07B       9       9       0   .init       
      tiempo                                    C096      21      33       1   .text       
      motor                                     C0B7      3F      63       1   .text       
-     main                                      C0F6      7F     127       1   .text       
-     _PUSH_ARGS_L                              C175      20      32       1   .text       
-     _ENTER_UNARY_L                            C195      29      41       2   .text       
-     _ENTER_BINARY_L                           C1BE      16      22       1   .text       
-     _LCMP_k_rel_j                             C1D4      1F      31       1   .text       
-     _LINC                                     C1F3      16      22       2   .text       
-     _LDEC                                     C209      1C      28       1   .text       
-     _LCMP                                     C225       6       6       1   .text       
-     _POP32                                    C22B      1A      26       2   .text       
+     Gdato                                     C0F6      34      52       1   .text       
+     main                                      C12A      82     130       1   .text       
+     _PUSH_ARGS_L                              C1AC      20      32       2   .text       
+     _ENTER_UNARY_L                            C1CC      29      41       2   .text       
+     _ENTER_BINARY_L                           C1F5      16      22       1   .text       
+     _ENTER_BINARY_L_RC                        C20B      19      25       1   .text       
+     _LDIVMOD                                  C224      A4     164       1   .text       
+     _LDIVU_k_is_k_div_j                       C2C8      17      23       1   .text       
+     _LCMP_k_rel_j                             C2DF      1F      31       1   .text       
+     _LINC                                     C2FE      16      22       2   .text       
+     _LDEC                                     C314      1C      28       1   .text       
+     _LDIVU_RC                                 C330       6       6       1   .text       
+     _LCMP                                     C336       6       6       1   .text       
+     _COPY                                     C33C      30      48       1   .text       
+     _POP32                                    C36C      1A      26       3   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
 NOT USED PROCEDURES
 rtshc08.o (ansiis.lib):
-  _PUSH_ARGS_D _ENTER_UNARY_L64 _ENTER_UNARY_L64_4 _ENTER_BINARY_L_RC 
-  _ENTER_BINARY_L_LC _ENTER_BINARY_L64 _ENTER_BINARY_L64_LC 
-  _ENTER_BINARY_L64_RC _IDIVMOD _SPLITSIGN _LADD_k_is_k_plus_j _k_is_k_plus_j_l 
-  _k_is_k_plus_j_i _LSUB_k_is_k_minus_j _LAND_k_is_k_and_j _LOR_k_is_k_or_j 
-  _LXOR_k_is_k_xor_j _LMUL_k_is_k_mul_j _LDIVMOD _NEG_L_HX _ABS_L_HX 
-  _SPLITSIGN_L _LMODU_k_is_k_mod_j _LDIVU_k_is_k_div_j _LMODS_k_is_k_mod_j 
-  _LDIVS_k_is_k_div_j _CMP24_k_rel_j _BMULS _BDIVS _BMODS _IMUL_STAR08 
-  _IDIVS_STAR08 _IDIVU_STAR08 _IMODS_STAR08 _IMODU_STAR08 _IDIVU_8 _IMODU_8 
-  _IASR _ILSR _ILSL _ICMP _LNEG _LNOT _LADD _LADD_RC _LSUB _LSUB_LC _LSUB_RC 
-  _LAND _LAND_RC _LOR _LOR_RC _LXOR _LXOR_RC _LMUL _LMUL_RC _LDIVS _LDIVS_LC 
-  _LDIVS_RC _LDIVU _LDIVU_LC _LDIVU_RC _LMODS _LMODS_LC _LMODS_RC _LMODU 
+  _PUSH_ARGS_D _ENTER_UNARY_L64 _ENTER_UNARY_L64_4 _ENTER_BINARY_L_LC 
+  _ENTER_BINARY_L64 _ENTER_BINARY_L64_LC _ENTER_BINARY_L64_RC _IDIVMOD 
+  _SPLITSIGN _LADD_k_is_k_plus_j _k_is_k_plus_j_l _k_is_k_plus_j_i 
+  _LSUB_k_is_k_minus_j _LAND_k_is_k_and_j _LOR_k_is_k_or_j _LXOR_k_is_k_xor_j 
+  _LMUL_k_is_k_mul_j _NEG_L_HX _ABS_L_HX _SPLITSIGN_L _LMODU_k_is_k_mod_j 
+  _LMODS_k_is_k_mod_j _LDIVS_k_is_k_div_j _CMP24_k_rel_j _BMULS _BDIVS _BMODS 
+  _IMUL_STAR08 _IDIVS_STAR08 _IDIVU_STAR08 _IMODS_STAR08 _IMODU_STAR08 _IDIVU_8 
+  _IMODU_8 _IASR _ILSR _ILSL _ICMP _LNEG _LNOT _LADD _LADD_RC _LSUB _LSUB_LC 
+  _LSUB_RC _LAND _LAND_RC _LOR _LOR_RC _LXOR _LXOR_RC _LMUL _LMUL_RC _LDIVS 
+  _LDIVS_LC _LDIVS_RC _LDIVU _LDIVU_LC _LMODS _LMODS_LC _LMODS_RC _LMODU 
   _LMODU_LC _LMODU_RC _LASR _LLSR _LLSL _LCMP_RC _PUSH_ARGS_24 
-  _ENTER_BINARY_24_RC _ENTER_BINARY_24 _CMP24 _CMP24_RC _COPY _COPY_L _POP64 
-  _STORE32 _STORE64 _SEXT8_32 _SEXT16_32 _CALL_STAR08 _CALL_STAR08_FAR 
-  _Jump_Table_Addr _Jump_Table_Offset _Jump_Table_Header_Addr 
-  _Jump_Table_Header_Offset _Search_Table_16_Addr _Search_Table_16_Offset 
-  _Search_Table_8_Addr _Search_Table_8_Offset _PUSH_CC _POP_CC 
-  _CONV_FAR_TO_NEAR _CONV_FAR_TO_LINEAR _CONV_LINEAR_TO_FAR 
+  _ENTER_BINARY_24_RC _ENTER_BINARY_24 _CMP24 _CMP24_RC _COPY_L _POP64 _STORE32 
+  _STORE64 _SEXT8_32 _SEXT16_32 _CALL_STAR08 _CALL_STAR08_FAR _Jump_Table_Addr 
+  _Jump_Table_Offset _Jump_Table_Header_Addr _Jump_Table_Header_Offset 
+  _Search_Table_16_Addr _Search_Table_16_Offset _Search_Table_8_Addr 
+  _Search_Table_8_Offset _PUSH_CC _POP_CC _CONV_FAR_TO_NEAR _CONV_FAR_TO_LINEAR 
+  _CONV_LINEAR_TO_FAR 
 NOT USED VARIABLES
-main_c.obj:
-  N 
 rtshc08.o (ansiis.lib):
   _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC245 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC386 ---- SIZE       4 ---
+Filling bytes inserted
+ 02DA0102
+------- ROM-ADDRESS: 0xC38A ---- RAM-ADDRESS: 0x102 ---- SIZE     730 ---
+Name of initialized Object : N:2
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190 0000019000
+ 0001900000 0190000001 9000000190
+ 0000019000 0001900000 0190000001
+ 9000000190 0000019000 0001900000
+ 0190000001 9000000190
+------- ROM-ADDRESS: 0xC664 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -899,13 +968,17 @@ Init                      USES _startupData loadByte
 _Startup                  USES __SEG_END_SSTACK Init main 
 tiempo                    USES i _LINC _POP32 _LCMP 
 motor                     USES _TPM2C1V bandera dato _LDEC _LINC _POP32 
+Gdato                     USES TIEMPOX _LDIVU_RC _POP32 dato N _COPY 
 main                      USES _SOPT1 _MCGTRM _MCGC1 _MCGSC _PTEDD _PTCDD 
                                 _PTFDD _PTFPE _TPM1SC _TPM1MOD _TPM1C2SC _TPM1C2V 
                                 _TPM1C3SC _TPM2SC _TPM2MOD _TPM2C1SC _TPM2C1V _PTCD 
-                                tiempo dato _TPM1CNT _TPM1C3V TIEMPO motor 
+                                tiempo dato _TPM1CNT _TPM1C3V TIEMPOX Gdato motor 
 _ENTER_BINARY_L           USES _PUSH_ARGS_L 
+_ENTER_BINARY_L_RC        USES _PUSH_ARGS_L 
+_LDIVU_k_is_k_div_j       USES _LDIVMOD 
 _LINC                     USES _ENTER_UNARY_L 
 _LDEC                     USES _ENTER_UNARY_L 
+_LDIVU_RC                 USES _ENTER_BINARY_L_RC _LDIVU_k_is_k_div_j 
 _LCMP                     USES _ENTER_BINARY_L _LCMP_k_rel_j 
 
 *********************************************************************************************
@@ -931,6 +1004,22 @@ DEPENDENCY TREE
  |  |     |       
  |  |     +- _LCMP_k_rel_j       
  |  |          
+ |  +- Gdato               
+ |  |  | 
+ |  |  +- _LDIVU_RC           
+ |  |  |  | 
+ |  |  |  +- _ENTER_BINARY_L_RC  
+ |  |  |  |  | 
+ |  |  |  |  +- _PUSH_ARGS_L         (see above)
+ |  |  |  |     
+ |  |  |  +- _LDIVU_k_is_k_div_j 
+ |  |  |     | 
+ |  |  |     +- _LDIVMOD            
+ |  |  |          
+ |  |  +- _POP32               (see above)
+ |  |  |  
+ |  |  +- _COPY               
+ |  |       
  |  +- motor               
  |     | 
  |     +- _LDEC               
@@ -955,6 +1044,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 4
-Total size of all blocks to be downloaded: 585
+Number of blocks to be downloaded: 3
+Total size of all blocks to be downloaded: 1640
 
