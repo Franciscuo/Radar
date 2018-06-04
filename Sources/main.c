@@ -3,11 +3,11 @@
 
 #define LRESET	PTCD_PTCD5
 
-#define GLCD_CS2     PTBD_PTBD1   // Chip Selection 2
-#define GLCD_CS1     PTBD_PTBD0	  // Chip Selection 1GLCD_CS2     PIN_B1   // Chip Selection 2
-#define GLCD_RS      PTBD_PTBD2	  // Data or Instruction input
+#define GLCD_CS1     PTBD_PTBD1	  // Chip Selection 1GLCD_CS2     PIN_B1   // Chip Selection 2
+#define GLCD_CS2     PTBD_PTBD0   // Chip Selection 2
+#define GLCD_RST     PTBD_PTBD2	  // RESET
+#define GLCD_RS      PTBD_PTBD3	 //Data or Instruction input
 #define GLCD_E       PTBD_PTBD4   // Enable
-#define GLCD_RST     PTBD_PTBD3	 //RESET
 
 
 
@@ -99,9 +99,9 @@ void tiempo(long t){
 
 void lcd_pulso(){
    GLCD_E=1;       // Pulse the enable pin
-   tiempo(20);
+   tiempo(2);
    GLCD_E=0;
-   tiempo(50);
+   tiempo(2);
    return;
 }
 
@@ -190,7 +190,6 @@ void lcd_clear(){
       for(i=0;i<64;i++){
          lcd_dato(0x00);
       }
-      
       lcd_chip(1);//Segunda Mitad
       aux=0b10111000| j;
       lcd_comando(aux);//Pagina X seleccionada
@@ -241,8 +240,12 @@ void main(void)
 	PTFDD=0b00100001;
 	PTFPE=0b00000010;
 	
+	LRESET=1;
+	tiempo(500);
+	LRESET=0;
+	
 	 lcd_init();//Inicializa LCD
-	 lcd_clear();//Limpia la lcd 
+	 //lcd_clear();//Limpia la lcd 
 	 lcd_radar();// PONE IMAGEN DEL RADAR
 	
 	TPM1SC=0b00001010; //TIM1 Pre*4, Int. deshabilitada, TIM deshabilitado
@@ -257,9 +260,6 @@ void main(void)
 	TPM2C1SC=0b00101000;
 	TPM2C1V=1400;
 	
-	LRESET=1;
-	tiempo(5000);
-	LRESET=0;
 	dato=0;
 	
 	TPM1SC_CLKSA = 1;
